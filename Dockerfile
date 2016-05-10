@@ -5,9 +5,9 @@ MAINTAINER Carlos Moro <cmoro@deusto.es>
 ENV TOMCAT_VERSION 8.0.33
 
 # Set locales
-RUN locale-gen en_GB.UTF-8
-ENV LANG en_GB.UTF-8
-ENV LC_CTYPE en_GB.UTF-8
+RUN locale-gen en_US.UTF-8
+ENV LANG en_US.UTF-8
+ENV LC_CTYPE en_US.UTF-8
 
 # Fix sh
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
