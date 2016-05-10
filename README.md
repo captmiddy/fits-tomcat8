@@ -1,47 +1,19 @@
-docker-tomcat
-=============
+# fits-tomcat8
+Dockerize FITS Web Service
 
-[![dockeri.co](http://dockeri.co/image/dordoka/tomcat)](https://registry.hub.docker.com/u/dordoka/tomcat/)
+This build will deploy the FITS Web Service into a Tomcat container. The container exposes port 8080 for Tomcat.
 
-Ubuntu 14.04, Oracle JDK 8 and Tomcat 8 based docker container.
+FITS is available at http://[DOCKERIP]:8080/
 
-# Description
-You should run this container on the background and mount the volume with your web app inside.
+More details can be found at http://projects.iq.harvard.edu/fits
 
-Includes:
+This build is offered As-Is with no support.
 
- - Oracle JDK 1.8.77
- - Tomcat 8.0.33
- - Git, wget, curl, build-essential
- 
-## Volumes
-Exports a volume on `/opt/tomcat/webapps`.
-You can mount the volume on run to a local directory containing your war file or exploded war directory.
-If you need the management app, remember to have a copy on your hosts volume mount point.
+# Build Features:
+There is a volume called /processing, if you attach local storage to this you can put files into the folder and then you can use the URL to examine them like follows:
+http://[DOCKERIP]:8080/examine?file=/processing/[FILENAME]
 
-## Ports
-Two ports are exposed:
+The webapps folder is exposed as a volume, if you wish to download a newer version of the FITS Web Service you could mount this folder and place your war file within it.  This would replace the FITS package currently deployed.  Do this only if you know what you are doing.  
 
- - 8080: default Tomcat port.
-  
- - 8009: default Tomcat debug port.
-
-Remember to map the ports to the docker host on run.
-
-
-# How to run the container
-## Using docker
-You need docker v1.3+ installed. To get the container up and running, run:
- 
-```
-sudo docker run -d -p 8080:8080 -p 8009:8009 -v /opt/tomcat/webapps:/opt/tomcat/webapps dordoka/tomcat
-```
-Remember to change `/opt/tomcat/webapps` to the directory where your app is stored.
-
-## Using docker compose
-If you have `docker-compose` installed, you can just launch:
-
-```
-sudo docker-compose up
-```
-
+# Based on dordoka/tomat
+The build of tomcat was pulled directly form the dordoka/tomcat build.  Due to a need to repack the war file the build was forked to remove the webapps VOLUME.

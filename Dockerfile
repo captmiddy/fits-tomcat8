@@ -37,15 +37,26 @@ rm -rf /opt/tomcat/webapps/examples && \
 rm -rf /opt/tomcat/webapps/docs && \
 rm -rf /opt/tomcat/webapps/ROOT
 
-# Add admin/admin user
-ADD tomcat-users.xml /opt/tomcat/conf/
+# DO NOT ADD: Add admin/admin user
+# ADD tomcat-users.xml /opt/tomcat/conf/
 
 ENV CATALINA_HOME /opt/tomcat
 ENV PATH $PATH:$CATALINA_HOME/bin
 
+ADD catalina.properties /opt/tomcat/conf
+ADD http://projects.iq.harvard.edu/files/fits/files/fits-0.10.2.zip /home
+RUN mkdir /tmp/FITS
+ADD http://projects.iq.harvard.edu/files/fits/files/fits-1.1.1.war /tmp/FITS/fits.war
+RUN cd /tmp/FITS ; jar -xf fits.war ; rm fits.war ; rm index.html
+ADD index.html /tmp/FITS/
+RUN cd /tmp/FITS ; jar -cf ROOT.war * ; mv ROOT.war /opt/tomcat/webapps/ROOT.war
+RUN mkdir /processing
+RUN cd /home ; unzip -q fits-0.10.2.zip ; rm /home/fits*zip ; mv /home/fits-* /home/fits
+
+VOLUME ["/processing"]
 EXPOSE 8080
 EXPOSE 8009
-VOLUME "/opt/tomcat/webapps"
+# Removing this volume for FITS: VOLUME "/opt/tomcat/webapps"
 WORKDIR /opt/tomcat
 
 # Launch Tomcat
